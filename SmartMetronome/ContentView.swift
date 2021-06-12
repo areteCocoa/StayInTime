@@ -6,46 +6,30 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 struct ContentView: View {
     
-    // Time signature
-    var beatsPerBar: Int { 4 }
-    var subdivision: Int { 4 }
-    
-    var tickEffect: AVAudioPlayer? = {
-        return try! AVAudioPlayer(contentsOf: url)
-    }()
-    private static var path: String { Bundle.main.path(forResource: "tick", ofType: "wav")! }
-    private static var url: URL { URL(fileURLWithPath: path) }
-    
-    @State var currentBeat: Int = 1
-    @State var beatsPerMinute: Double = 60
-    @State private var timer: Timer?
-
-    private var isRunning: Bool { timer != nil }
-    private var beatsPerSecond: Double { beatsPerMinute / 60 }
+    @StateObject var appState = AppState()
     
     var body: some View {
         VStack {
-            Text("Time signature is \(beatsPerBar)/\(subdivision)")
+            Text("Time signature is \(appState.beatsPerBar)/\(appState.subdivision)")
                 .font(.title)
             
             Spacer()
             
             Text("Current beat is")
-            Text("\(currentBeat)")
+            Text("\(appState.currentBeat)")
                 .font(.largeTitle)
             
             Spacer()
             
             HStack {
                 Spacer()
-                if !isRunning {
-                    Button("Start") { self.start() }
+                if !self.appState.metronomeRunning {
+                    Button("Start") { self.appState.start() }
                 } else {
-                    Button("Stop") { self.stop() }
+                    Button("Stop") { self.appState.stop() }
                 }
                 Spacer()
             }
@@ -57,28 +41,10 @@ struct ContentView: View {
             .padding()
             
         }
+        .onAppear { self.appState.restartDetection() }
     }
     
-    func start() {
-        let timer = Timer.scheduledTimer(withTimeInterval: self.beatsPerSecond, repeats: true) { _ in
-            self.incrementBeat()
-        }
-        self.timer = timer
-    }
     
-    func stop() {
-        self.timer?.invalidate()
-        self.timer = nil
-    }
-    
-    func incrementBeat() {
-        currentBeat = (currentBeat % beatsPerBar) + 1
-        tick()
-    }
-    
-    func tick() {
-        self.tickEffect!.play()
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {

@@ -11,7 +11,9 @@
 		20782C822675560900A0608C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C812675560900A0608C /* ContentView.swift */; };
 		20782C842675560A00A0608C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C832675560A00A0608C /* Assets.xcassets */; };
 		20782C872675560A00A0608C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C862675560A00A0608C /* Preview Assets.xcassets */; };
-		20782C8F26755D8A00A0608C /* tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 20782C8E26755D8A00A0608C /* tick.wav */; };
+		208918DD26756316005086BF /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208918DC26756316005086BF /* AudioManager.swift */; };
+		208918DF267569D4005086BF /* ClassificationResultsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208918DE267569D4005086BF /* ClassificationResultsSubject.swift */; };
+		208918E226757663005086BF /* tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 208918E126757663005086BF /* tick.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +22,10 @@
 		20782C812675560900A0608C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		20782C832675560A00A0608C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20782C862675560A00A0608C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		20782C8E26755D8A00A0608C /* tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tick.wav; sourceTree = "<group>"; };
+		208918DC26756316005086BF /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		208918DE267569D4005086BF /* ClassificationResultsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassificationResultsSubject.swift; sourceTree = "<group>"; };
+		208918E026756F87005086BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		208918E126757663005086BF /* tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tick.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +58,12 @@
 		20782C7E2675560900A0608C /* SmartMetronome */ = {
 			isa = PBXGroup;
 			children = (
-				20782C8E26755D8A00A0608C /* tick.wav */,
+				208918E026756F87005086BF /* Info.plist */,
+				208918E126757663005086BF /* tick.wav */,
 				20782C7F2675560900A0608C /* SmartMetronomeApp.swift */,
 				20782C812675560900A0608C /* ContentView.swift */,
+				208918DC26756316005086BF /* AudioManager.swift */,
+				208918DE267569D4005086BF /* ClassificationResultsSubject.swift */,
 				20782C832675560A00A0608C /* Assets.xcassets */,
 				20782C852675560A00A0608C /* Preview Content */,
 			);
@@ -128,7 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20782C8F26755D8A00A0608C /* tick.wav in Resources */,
+				208918E226757663005086BF /* tick.wav in Resources */,
 				20782C872675560A00A0608C /* Preview Assets.xcassets in Resources */,
 				20782C842675560A00A0608C /* Assets.xcassets in Resources */,
 			);
@@ -141,8 +149,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208918DD26756316005086BF /* AudioManager.swift in Sources */,
 				20782C822675560900A0608C /* ContentView.swift in Sources */,
 				20782C802675560900A0608C /* SmartMetronomeApp.swift in Sources */,
+				208918DF267569D4005086BF /* ClassificationResultsSubject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,12 +286,16 @@
 				DEVELOPMENT_TEAM = V8CJ4XKCBY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartMetronome/Info.plist;
+				INFOPLIST_KEY_CFBundleExecutable = SmartMetronome;
+				INFOPLIST_KEY_CFBundleName = SmartMetronome;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,12 +320,16 @@
 				DEVELOPMENT_TEAM = V8CJ4XKCBY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SmartMetronome/Info.plist;
+				INFOPLIST_KEY_CFBundleExecutable = SmartMetronome;
+				INFOPLIST_KEY_CFBundleName = SmartMetronome;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
