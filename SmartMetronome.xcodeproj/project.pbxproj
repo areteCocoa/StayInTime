@@ -11,6 +11,7 @@
 		20782C822675560900A0608C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C812675560900A0608C /* ContentView.swift */; };
 		20782C842675560A00A0608C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C832675560A00A0608C /* Assets.xcassets */; };
 		20782C872675560A00A0608C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C862675560A00A0608C /* Preview Assets.xcassets */; };
+		20782C8F26755D8A00A0608C /* tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 20782C8E26755D8A00A0608C /* tick.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		20782C812675560900A0608C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		20782C832675560A00A0608C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20782C862675560A00A0608C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		20782C8E26755D8A00A0608C /* tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tick.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 		20782C7E2675560900A0608C /* SmartMetronome */ = {
 			isa = PBXGroup;
 			children = (
+				20782C8E26755D8A00A0608C /* tick.wav */,
 				20782C7F2675560900A0608C /* SmartMetronomeApp.swift */,
 				20782C812675560900A0608C /* ContentView.swift */,
 				20782C832675560A00A0608C /* Assets.xcassets */,
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20782C8F26755D8A00A0608C /* tick.wav in Resources */,
 				20782C872675560A00A0608C /* Preview Assets.xcassets in Resources */,
 				20782C842675560A00A0608C /* Assets.xcassets in Resources */,
 			);
