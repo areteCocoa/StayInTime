@@ -47,53 +47,79 @@ struct PlaytimeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
+            HStack(spacing: 32) {
                 VStack {
                     Text("\(formatted(playTime))")
                         .font(.title)
                     Text("Play time")
                     
                 }
-                .frame(maxWidth: .infinity)
                 VStack {
                     Text("\(formatted(idleTime))")
                         .font(.title)
                     Text("Idle time")
                     
                 }
-                .frame(maxWidth: .infinity)
                 VStack {
                     Text("\(formatted(totalTime))")
                         .font(.title)
                     Text("Total time")
                 }
-                .frame(maxWidth: .infinity)
             }
             .foregroundColor(.white)
-            .padding()
             .frame(maxWidth: .infinity)
+            .padding()
             .background(.pink)
+            .cornerRadius(16)
+            .padding()
+
             
-            List {
-//                LineView(data: [8,23,54,32,12,37,7,23,43], title: "Line chart", legend: "Full screen") // legend is optional, use optional .padding()
-                MultiLineChartView(data: [(graphData, GradientColors.green)], title: "", rateValue: nil)
-                    .frame(maxWidth: .infinity)
-                    .listRowBackground(Color.clear)
-                
-                
-                Section("Detailed play time") {
-                    ForEach(0..<playChunks.count) { index in
-                        HStack(spacing: 0) {
-                            Text(" \(formatted(abs(playChunks[index].stop.timeIntervalSince(playChunks[index].start))))")
-                                .font(.headline)
-                            Text(" of playtime")
-                            Spacer()
-                            Text("\(formatted(start: playChunks[index].start, end: playChunks[index].stop))")
-                                .foregroundColor(.gray)
+            ScrollView {
+                Group {
+                    LineView(data: graphData, title: "% of time playing", legend: "% of time played", style: .init(backgroundColor: .pink, accentColor: .white, gradientColor: GradientColor.init(start: .white, end: .white), textColor: .white, legendTextColor: .white, dropShadowColor: .black), valueSpecifier: "value test", legendSpecifier: "%")
+                        .frame(width: nil, height: 360, alignment: .center)
+                        .padding()
+                        .background(Color.pink)
+                        .cornerRadius(16)
+                    
+                    HStack {
+                        ZStack {
+                            VStack {
+                                ForEach(0..<playChunks.count) { index in
+                                    Circle().frame(width: 7, height: nil, alignment: .center)
+                                        .frame(width: nil, height: 60, alignment: .center)
+                                }
+                            }
+                            
+                            Rectangle()
+                                .foregroundColor(.black.opacity(0.8))
+                                .frame(width: 1, height: nil, alignment: .center)
+                                .padding(.vertical, 28)
+                        }
+                        
+                        VStack {
+                            ForEach(0..<playChunks.count) { index in
+                                VStack(alignment: .leading) {
+                                    Text("\(formatted(start: playChunks[index].start))")
+                                        .foregroundColor(.gray)
+                                    HStack(spacing: 0) {
+                                        
+                                        
+                                        Text("\(formatted(abs(playChunks[index].stop.timeIntervalSince(playChunks[index].start))))")
+                                            .font(.headline)
+                                        Text(" of play time")
+                                        Spacer()
+                                        
+                                    }
+                                }
+                                .frame(width: nil, height: 60, alignment: .center)
+                            }
                         }
                     }
                 }
-            }
+                .padding()
+                
+            }.background(Color.gray.opacity(0.05))
         }
         .navigationBarTitle("Play time")
     }
@@ -103,6 +129,13 @@ struct PlaytimeView: View {
         formatter.dateStyle = .none
         formatter.timeStyle = .short
         return formatter.string(from: start, to: end)
+    }
+    
+    func formatted(start: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return formatter.string(from: start)
     }
     
     func formatted(_ timeInterval: TimeInterval) -> String {
