@@ -41,6 +41,9 @@ class AppState: ObservableObject {
     @Published var soundDetectionRunning: Bool = false
     @Published var metronomeRunning: Bool = false
     
+    @Published var detectingSnaps: Bool = false
+    @Published var currentlyPracticing: Bool = false
+    
     init() {
         snapTimeline.didSetBpm = {
             guard let bpm = self.snapTimeline.beatsPerMinute else { return }
@@ -61,11 +64,17 @@ class AppState: ObservableObject {
                   receiveValue: { value in
                 let instruments = value.classifications.filter { self.instrumentTimeline.currentInstrument == $0.identifier }
                 self.instrumentTimeline.update(instruments.map { ($0.identifier, $0.confidence) })
+                if self.currentlyPracticing != self.instrumentTimeline.isPlaying {
+                    self.currentlyPracticing = self.instrumentTimeline.isPlaying
+                }
                 
                 guard let snap = value.classifications.first(where: { $0.identifier == "finger_snapping" }) else { return }
                 
                 if !self.metronomeRunning {
                     self.snapTimeline.add(confidence: snap.confidence)
+                    if self.detectingSnaps != self.snapTimeline.isSnapping {
+                        self.detectingSnaps = self.snapTimeline.isSnapping
+                    }
                 }
                 
                 let threshold: Double = 2

@@ -300,7 +300,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SmartMetronome/Info.plist;
 				INFOPLIST_KEY_CFBundleExecutable = SmartMetronome;
-				INFOPLIST_KEY_CFBundleName = SmartMetronome;
+				INFOPLIST_KEY_CFBundleName = "Stay In Time";
 				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -334,7 +334,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SmartMetronome/Info.plist;
 				INFOPLIST_KEY_CFBundleExecutable = SmartMetronome;
-				INFOPLIST_KEY_CFBundleName = SmartMetronome;
+				INFOPLIST_KEY_CFBundleName = "Stay In Time";
 				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

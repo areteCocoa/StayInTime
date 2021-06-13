@@ -22,6 +22,8 @@ struct ContentView: View {
                 beatsPerMinute: $appState.beatsPerMinute,
                 currentBeat: $appState.currentBeat,
                 metronomeRunning: $appState.metronomeRunning,
+                currentlyPracticing: $appState.currentlyPracticing,
+                currentlySnapping: $appState.detectingSnaps,
                 onStart: { self.appState.start() },
                 onStop: { self.appState.stop() },
                 onChangeBpm: { self.appState.beatsPerMinute = $0 },
@@ -46,6 +48,9 @@ struct MetronomeView: View {
     @Binding var currentBeat: Int
     @Binding var metronomeRunning: Bool
     
+    @Binding var currentlyPracticing: Bool
+    @Binding var currentlySnapping: Bool
+    
     var onStart: (() -> Void)
     var onStop: (() -> Void)
     
@@ -54,6 +59,9 @@ struct MetronomeView: View {
     var onChangeBeatValue: ((Int) -> Void)
     
     var analyticsData: (() -> InstrumentTimeline)
+    
+    private let practicingIndicatorAnimation = Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)
+    @State var practicingIndicatorIsOpaque: Bool = false
     
     struct Beat: Identifiable {
         typealias ObjectIdentifier = Int
@@ -147,10 +155,13 @@ struct MetronomeView: View {
                 
                 Spacer()
                 
-                Text("Current beat is")
-                    .foregroundColor(.gray)
-                Text("\(currentBeat)")
-                    .font(.largeTitle)
+                Group {
+                    Text("Current beat is")
+                        .foregroundColor(.gray)
+                    Text("\(currentBeat)")
+                        .font(.system(size: 128))
+                }
+                
                 
                 Spacer()
                 
@@ -174,6 +185,33 @@ struct MetronomeView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                
+                Spacer()
+                
+                // "Practicing" cell
+                
+                if currentlyPracticing {
+                    HStack {
+                        Text("Currently practicing")
+                            .padding()
+                    }
+                    .opacity(practicingIndicatorIsOpaque ? 1.0 : 0.0)
+                    .onAppear {
+                        withAnimation(practicingIndicatorAnimation) {
+                            self.practicingIndicatorIsOpaque.toggle()
+                        }
+                    }
+                } else {
+                    Text(" ")
+                        .padding()
+                }
+                
+                
+                // "Snapping" cell
+                
+                HStack {
+                    Text(currentlySnapping ? "Keep snapping to set the tempo..." : " ")
+                }
                 
                 Spacer()
                 
@@ -233,6 +271,8 @@ struct ContentView_Previews: PreviewProvider {
                       beatsPerMinute: .constant(60),
                       currentBeat: .constant(1),
                       metronomeRunning: .constant(false),
+                      currentlyPracticing: .constant(false),
+                      currentlySnapping: .constant(false),
                       onStart: {},
                       onStop: {},
                       onChangeBpm: { _ in },

@@ -23,6 +23,8 @@ class InstrumentTimeline {
     
     var currentInstrument: String = "bowed_string_instrument"
     
+    var isPlaying: Bool { instrumentPlayStart[currentInstrument] != nil }
+    
     var playTime: TimeInterval {
         var total: TimeInterval = 0
         playHistory.forEach { chunk in

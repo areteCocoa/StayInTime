@@ -24,9 +24,15 @@ class SnapTimeline {
     
     var beatsPerBar: Int = 4
     
+    var isSnapping: Bool { wasJustReset || timeline.filter { $1 > 0.85 }.count >= 1 }
+    private var wasJustReset: Bool = false
+    
     func add(confidence: Double) {
         timeline.append((Date(), confidence))
 
+        if confidence > 0.85 {
+            wasJustReset = false
+        }
         processTimeline()
     }
     
@@ -77,6 +83,7 @@ class SnapTimeline {
         
         guard isValid else {
             print("Is not valid, throwing out the whole thing")
+            wasJustReset = true
             timeline = []
             return
         }
