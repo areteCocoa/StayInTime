@@ -24,7 +24,7 @@ class AppState: ObservableObject {
     private var lastActedTime: Date?
     
     private var snapTimeline: SnapTimeline = SnapTimeline()
-    private var instrumentTimeline: InstrumentTimeline = InstrumentTimeline()
+    var instrumentTimeline: InstrumentTimeline = InstrumentTimeline()
     
     @Published var beatsPerBar: Int = 4
     @Published var beatValue: Int = 4

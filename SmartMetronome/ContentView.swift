@@ -11,21 +11,27 @@ struct ContentView: View {
     
     @StateObject var appState = AppState()
     
+    @State var showAnalytics: Bool = false
+    
     var body: some View {
-        MetronomeView(
-            configuring: false,
-            beatsPerBar: $appState.beatsPerBar,
-            beatValue: $appState.beatValue,
-            beatsPerMinute: $appState.beatsPerMinute,
-            currentBeat: $appState.currentBeat,
-            metronomeRunning: $appState.metronomeRunning,
-            onStart: { self.appState.start() },
-            onStop: { self.appState.stop() },
-            onChangeBpm: { self.appState.beatsPerMinute = $0 },
-            onChangeBeatsPerBar: { self.appState.beatsPerBar = $0 },
-            onChangeBeatValue: { self.appState.beatValue = $0 }
-        )
-            .onAppear { self.appState.restartDetection() }
+        NavigationView {
+            MetronomeView(
+                configuring: false,
+                beatsPerBar: $appState.beatsPerBar,
+                beatValue: $appState.beatValue,
+                beatsPerMinute: $appState.beatsPerMinute,
+                currentBeat: $appState.currentBeat,
+                metronomeRunning: $appState.metronomeRunning,
+                onStart: { self.appState.start() },
+                onStop: { self.appState.stop() },
+                onChangeBpm: { self.appState.beatsPerMinute = $0 },
+                onChangeBeatsPerBar: { self.appState.beatsPerBar = $0 },
+                onChangeBeatValue: { self.appState.beatValue = $0 },
+                analyticsData: { self.appState.instrumentTimeline }
+            )
+                .navigationBarHidden(true)
+                .onAppear { self.appState.restartDetection() }
+        }
     }
 }
 
@@ -47,6 +53,8 @@ struct MetronomeView: View {
     var onChangeBeatsPerBar: ((Int) -> Void)
     var onChangeBeatValue: ((Int) -> Void)
     
+    var analyticsData: (() -> InstrumentTimeline)
+    
     struct Beat: Identifiable {
         typealias ObjectIdentifier = Int
         var id: ObjectIdentifier { number }
@@ -59,138 +67,157 @@ struct MetronomeView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                VStack {
-                    if configuring {
-                        VStack {
-                            Stepper {
-                                HStack(alignment: .center, spacing: 4) {
-                                    Text("\(Int(beatsPerMinute))")
-                                        .font(.largeTitle)
-                                        .bold()
-                                    Text("beats per minute")
+        ZStack {
+            VStack {
+                HStack {
+                    Spacer()
+                    VStack {
+                        if configuring {
+                            VStack {
+                                Stepper {
+                                    HStack(alignment: .center, spacing: 4) {
+                                        Text("\(Int(beatsPerMinute))")
+                                            .font(.largeTitle)
+                                            .bold()
+                                        Text("beats per minute")
+                                    }
+                                } onIncrement: {
+                                    self.onChangeBpm(self.beatsPerMinute + 1)
+                                } onDecrement: {
+                                    self.onChangeBpm(self.beatsPerMinute - 1)
                                 }
-                            } onIncrement: {
-                                self.onChangeBpm(self.beatsPerMinute + 1)
-                            } onDecrement: {
-                                self.onChangeBpm(self.beatsPerMinute - 1)
-                            }
-                            Stepper {
-                                HStack(alignment: .center, spacing: 4) {
-                                    Text("\(Int(beatsPerBar))")
-                                        .font(.largeTitle)
-                                        .bold()
-                                    Text("beats per bar")
+                                Stepper {
+                                    HStack(alignment: .center, spacing: 4) {
+                                        Text("\(Int(beatsPerBar))")
+                                            .font(.largeTitle)
+                                            .bold()
+                                        Text("beats per bar")
+                                    }
+                                } onIncrement: {
+                                    self.onChangeBeatsPerBar(self.beatsPerBar + 1)
+                                } onDecrement: {
+                                    self.onChangeBeatsPerBar(self.beatsPerBar - 1)
                                 }
-                            } onIncrement: {
-                                self.onChangeBeatsPerBar(self.beatsPerBar + 1)
-                            } onDecrement: {
-                                self.onChangeBeatsPerBar(self.beatsPerBar - 1)
-                            }
-                            Stepper {
-                                HStack(alignment: .center, spacing: 4) {
-                                    Text("\(Int(beatValue))")
-                                        .font(.largeTitle)
-                                        .bold()
-                                    Text("note value")
+                                Stepper {
+                                    HStack(alignment: .center, spacing: 4) {
+                                        Text("\(Int(beatValue))")
+                                            .font(.largeTitle)
+                                            .bold()
+                                        Text("note value")
+                                    }
+                                } onIncrement: {
+                                    self.onChangeBeatValue(self.beatValue * 2)
+                                } onDecrement: {
+                                    self.onChangeBeatValue(self.beatValue / 2)
                                 }
-                            } onIncrement: {
-                                self.onChangeBeatValue(self.beatValue * 2)
-                            } onDecrement: {
-                                self.onChangeBeatValue(self.beatValue / 2)
-                            }
 
-                            Button(action: {
-                                withAnimation {
-                                    self.configuring = false
+                                Button(action: {
+                                    withAnimation {
+                                        self.configuring = false
+                                    }
+                                }) {
+                                    Text("Done")
+                                        .font(.headline)
+                                        .foregroundColor(.pink)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(.white)
+                                        .cornerRadius(16)
+                                        
                                 }
-                            }) {
-                                Text("Done")
-                                    .font(.headline)
-                                    .foregroundColor(.pink)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(.white)
-                                    .cornerRadius(16)
-                                    
+                            }
+                        } else {
+                            VStack {
+                                Text("Time signature is \(beatsPerBar)/\(beatValue)")
+                                    .font(.title)
+                                Text("BPM is \(Int(beatsPerMinute))")
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    self.configuring = true
+                                }
                             }
                         }
-                    } else {
-                        VStack {
-                            Text("Time signature is \(beatsPerBar)/\(beatValue)")
+                    }
+                    Spacer()
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.pink)
+                
+                Spacer()
+                
+                Text("Current beat is")
+                Text("\(currentBeat)")
+                    .font(.largeTitle)
+                
+                Spacer()
+                
+                HStack(alignment: .center, spacing: 4) {
+                    ForEach(self.beats) { beat in
+                        if beat.number == currentBeat {
+                            Text("\(beat.number)")
                                 .font(.title)
-                            Text("BPM is \(Int(beatsPerMinute))")
-                        }
-                        .onTapGesture {
-                            withAnimation {
-                                self.configuring = true
-                            }
+                                .bold()
+                                .padding(.vertical, 16)
+                                .frame(maxWidth: .infinity)
+                                .foregroundColor(.white)
+                                .background(.pink)
+                                .cornerRadius(8)
+                        } else {
+                            Text("\(beat.number)")
+                                .font(.title)
+                                .padding(.vertical, 16)
+                                .frame(maxWidth: .infinity)
                         }
                     }
                 }
+                .padding(.horizontal, 16)
+                
                 Spacer()
-            }
-            .foregroundColor(.white)
-            .padding()
-            .background(Color.pink)
-            
-            Spacer()
-            
-            Text("Current beat is")
-            Text("\(currentBeat)")
-                .font(.largeTitle)
-            
-            Spacer()
-            
-            HStack(alignment: .center, spacing: 4) {
-                ForEach(self.beats) { beat in
-                    if beat.number == currentBeat {
-                        Text("\(beat.number)")
-                            .font(.title)
+                
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        if !metronomeRunning {
+                            self.onStart()
+                        } else {
+                            self.onStop()
+                        }
+                    }) {
+                        Text(metronomeRunning ? "Stop" : "Start")
+                            .font(.title2)
                             .bold()
-                            .padding(.vertical, 16)
-                            .frame(maxWidth: .infinity)
                             .foregroundColor(.white)
+                            .padding(.horizontal, 32)
+                            .padding()
+                            .background(Color.pink)
+                            .cornerRadius(16)
+                            .padding()
+                    }
+                    Spacer()
+                }
+                
+                
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    NavigationLink {
+                        InstrumentTimelineView(instrumentTimeline: analyticsData())
+                    } label: {
+                        Image(systemName: "chart.bar.fill")
+                            .foregroundColor(.white)
+                            .padding()
                             .background(.pink)
-                            .cornerRadius(8)
-                    } else {
-                        Text("\(beat.number)")
-                            .font(.title)
-                            .padding(.vertical, 16)
-                            .frame(maxWidth: .infinity)
+                            .cornerRadius(16)
+                            .padding()
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            
-            Spacer()
-            
-            HStack {
-                Spacer()
-                Button(action: {
-                    if !metronomeRunning {
-                        self.onStart()
-                    } else {
-                        self.onStop()
-                    }
-                }) {
-                    Text(metronomeRunning ? "Stop" : "Start")
-                        .font(.title2)
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 32)
-                        .padding()
-                        .background(Color.pink)
-                        .cornerRadius(16)
-                        .padding()
-                }
-                Spacer()
-            }
-            
-            
         }
+
     }
 }
 
@@ -206,6 +233,7 @@ struct ContentView_Previews: PreviewProvider {
                       onStop: {},
                       onChangeBpm: { _ in },
                       onChangeBeatsPerBar: { _ in },
-                      onChangeBeatValue: { _ in })
+                      onChangeBeatValue: { _ in },
+                      analyticsData: { InstrumentTimeline() })
     }
 }

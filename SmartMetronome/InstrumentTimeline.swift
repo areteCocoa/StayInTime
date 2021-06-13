@@ -23,6 +23,24 @@ class InstrumentTimeline {
     
     var currentInstrument: String = "bowed_string_instrument"
     
+    var playTime: TimeInterval {
+        var total: TimeInterval = 0
+        playHistory.forEach { chunk in
+            let time = abs(chunk.stop.timeIntervalSince(chunk.start))
+            total += time
+        }
+        return total
+    }
+    
+    var idleTime: TimeInterval { totalTime - playTime }
+    
+    var totalTime: TimeInterval {
+        let start = playHistory.map(\.start).min()
+        let end = playHistory.map(\.stop).max()
+        guard let start = start, let end = end else { return 0 }
+        return end.timeIntervalSince(start)
+    }
+    
     private let playStopThreshold: Double = 5.0
     
     // The threshold for someone "playing" and instrument
@@ -33,7 +51,7 @@ class InstrumentTimeline {
     private var instrumentPlayStart: [String: Date?] = [:]
     private var instrumentPlayStop: [String: Date?] = [:]
     
-    private var playHistory: [PlayDuration] = []
+    var playHistory: [PlayDuration] = []
     
     func update(_ instruments: [(String, Double)]) {
         instruments.forEach { identifier, confidence in

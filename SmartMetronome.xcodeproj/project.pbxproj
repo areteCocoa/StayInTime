@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		201910262675F6C10090D915 /* InstrumentTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201910252675F6C10090D915 /* InstrumentTimeline.swift */; };
+		20191028267608280090D915 /* InstrumentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20191027267608280090D915 /* InstrumentTimelineView.swift */; };
 		20782C802675560900A0608C /* SmartMetronomeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C7F2675560900A0608C /* SmartMetronomeApp.swift */; };
 		20782C822675560900A0608C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C812675560900A0608C /* ContentView.swift */; };
 		20782C842675560A00A0608C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C832675560A00A0608C /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		201910252675F6C10090D915 /* InstrumentTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentTimeline.swift; sourceTree = "<group>"; };
+		20191027267608280090D915 /* InstrumentTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentTimelineView.swift; sourceTree = "<group>"; };
 		20782C7C2675560900A0608C /* SmartMetronome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartMetronome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20782C7F2675560900A0608C /* SmartMetronomeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartMetronomeApp.swift; sourceTree = "<group>"; };
 		20782C812675560900A0608C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				201910252675F6C10090D915 /* InstrumentTimeline.swift */,
 				208918E3267581B5005086BF /* SnapTimeline.swift */,
 				20782C812675560900A0608C /* ContentView.swift */,
+				20191027267608280090D915 /* InstrumentTimelineView.swift */,
 				208918DC26756316005086BF /* AudioManager.swift */,
 				208918DE267569D4005086BF /* ClassificationResultsSubject.swift */,
 				20782C832675560A00A0608C /* Assets.xcassets */,
@@ -157,6 +160,7 @@
 			files = (
 				208918DD26756316005086BF /* AudioManager.swift in Sources */,
 				20782C822675560900A0608C /* ContentView.swift in Sources */,
+				20191028267608280090D915 /* InstrumentTimelineView.swift in Sources */,
 				20782C802675560900A0608C /* SmartMetronomeApp.swift in Sources */,
 				201910262675F6C10090D915 /* InstrumentTimeline.swift in Sources */,
 				208918E4267581B5005086BF /* SnapTimeline.swift in Sources */,
