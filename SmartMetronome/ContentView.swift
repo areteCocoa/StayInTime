@@ -15,7 +15,7 @@ struct ContentView: View {
         VStack {
             Text("Time signature is \(appState.beatsPerBar)/\(appState.subdivision)")
                 .font(.title)
-            Text("BPM is \(appState.beatsPerMinute)")
+            Text("BPM is \(Int(appState.beatsPerMinute))")
             
             Spacer()
             

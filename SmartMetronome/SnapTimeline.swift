@@ -61,6 +61,26 @@ class SnapTimeline {
         }
         
         let average = differences.reduce(0.0, { $0 + $1 }) / Double(differences.count)
+        
+        // Differences must be within a certain percentage of each other, otherwise
+        // it's likely old snaps still in the timeline
+        let averageThreshold = 0.10
+        let lowThreshold = average * (1 - averageThreshold)
+        let highThreshold = average * (1 + averageThreshold)
+        var isValid = true
+        for difference in differences {
+            guard lowThreshold <= difference && difference <= highThreshold else {
+                isValid = false
+                continue
+            }
+        }
+        
+        guard isValid else {
+            print("Is not valid, throwing out the whole thing")
+            timeline = []
+            return
+        }
+        
         let bpm = Int(floor(60 / average))
         
         self.beatsPerMinute = bpm
