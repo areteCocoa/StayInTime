@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		201910262675F6C10090D915 /* InstrumentTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201910252675F6C10090D915 /* InstrumentTimeline.swift */; };
 		20191028267608280090D915 /* InstrumentTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20191027267608280090D915 /* InstrumentTimelineView.swift */; };
+		2068C02A267668E100C0A585 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 2068C029267668E100C0A585 /* SwiftUICharts */; };
 		20782C802675560900A0608C /* SmartMetronomeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C7F2675560900A0608C /* SmartMetronomeApp.swift */; };
 		20782C822675560900A0608C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20782C812675560900A0608C /* ContentView.swift */; };
 		20782C842675560A00A0608C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20782C832675560A00A0608C /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2068C02A267668E100C0A585 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +105,9 @@
 			dependencies = (
 			);
 			name = SmartMetronome;
+			packageProductDependencies = (
+				2068C029267668E100C0A585 /* SwiftUICharts */,
+			);
 			productName = SmartMetronome;
 			productReference = 20782C7C2675560900A0608C /* SmartMetronome.app */;
 			productType = "com.apple.product-type.application";
@@ -131,6 +136,9 @@
 				Base,
 			);
 			mainGroup = 20782C732675560900A0608C;
+			packageReferences = (
+				2068C028267668E100C0A585 /* XCRemoteSwiftPackageReference "chartview" */,
+			);
 			productRefGroup = 20782C7D2675560900A0608C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -377,6 +385,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2068C028267668E100C0A585 /* XCRemoteSwiftPackageReference "chartview" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apppear/chartview.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2068C029267668E100C0A585 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2068C028267668E100C0A585 /* XCRemoteSwiftPackageReference "chartview" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 20782C742675560900A0608C /* Project object */;
 }
