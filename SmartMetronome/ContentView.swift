@@ -15,7 +15,7 @@ struct ContentView: View {
         MetronomeView(
             configuring: false,
             beatsPerBar: $appState.beatsPerBar,
-            subdivision: $appState.subdivision,
+            beatValue: $appState.beatValue,
             beatsPerMinute: $appState.beatsPerMinute,
             currentBeat: $appState.currentBeat,
             metronomeRunning: $appState.metronomeRunning,
@@ -23,7 +23,7 @@ struct ContentView: View {
             onStop: { self.appState.stop() },
             onChangeBpm: { self.appState.beatsPerMinute = $0 },
             onChangeBeatsPerBar: { self.appState.beatsPerBar = $0 },
-            onChangeSubdivision: { self.appState.subdivision = $0 }
+            onChangeBeatValue: { self.appState.beatValue = $0 }
         )
             .onAppear { self.appState.restartDetection() }
     }
@@ -34,7 +34,7 @@ struct MetronomeView: View {
     @State var configuring: Bool
     
     @Binding var beatsPerBar: Int
-    @Binding var subdivision: Int
+    @Binding var beatValue: Int
     @Binding var beatsPerMinute: Double
     
     @Binding var currentBeat: Int
@@ -45,7 +45,7 @@ struct MetronomeView: View {
     
     var onChangeBpm: ((Double) -> Void)
     var onChangeBeatsPerBar: ((Int) -> Void)
-    var onChangeSubdivision: ((Int) -> Void)
+    var onChangeBeatValue: ((Int) -> Void)
     
     struct Beat: Identifiable {
         typealias ObjectIdentifier = Int
@@ -91,15 +91,15 @@ struct MetronomeView: View {
                             }
                             Stepper {
                                 HStack(alignment: .center, spacing: 4) {
-                                    Text("\(Int(subdivision))")
+                                    Text("\(Int(beatValue))")
                                         .font(.largeTitle)
                                         .bold()
                                     Text("note value")
                                 }
                             } onIncrement: {
-                                self.onChangeSubdivision(self.subdivision * 2)
+                                self.onChangeBeatValue(self.beatValue * 2)
                             } onDecrement: {
-                                self.onChangeSubdivision(self.subdivision / 2)
+                                self.onChangeBeatValue(self.beatValue / 2)
                             }
 
                             Button(action: {
@@ -119,7 +119,7 @@ struct MetronomeView: View {
                         }
                     } else {
                         VStack {
-                            Text("Time signature is \(beatsPerBar)/\(subdivision)")
+                            Text("Time signature is \(beatsPerBar)/\(beatValue)")
                                 .font(.title)
                             Text("BPM is \(Int(beatsPerMinute))")
                         }
@@ -198,7 +198,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         MetronomeView(configuring: true,
                       beatsPerBar: .constant(8),
-                      subdivision: .constant(4),
+                      beatValue: .constant(4),
                       beatsPerMinute: .constant(60),
                       currentBeat: .constant(1),
                       metronomeRunning: .constant(false),
@@ -206,6 +206,6 @@ struct ContentView_Previews: PreviewProvider {
                       onStop: {},
                       onChangeBpm: { _ in },
                       onChangeBeatsPerBar: { _ in },
-                      onChangeSubdivision: { _ in })
+                      onChangeBeatValue: { _ in })
     }
 }

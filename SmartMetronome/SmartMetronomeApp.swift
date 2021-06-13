@@ -26,7 +26,7 @@ class AppState: ObservableObject {
     private var snapTimeline: SnapTimeline = SnapTimeline()
     
     @Published var beatsPerBar: Int = 4
-    @Published var subdivision: Int = 4
+    @Published var beatValue: Int = 4
     
     @Published var currentBeat: Int = 1
     @Published var beatsPerMinute: Double = 60
