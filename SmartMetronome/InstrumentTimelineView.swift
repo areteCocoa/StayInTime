@@ -76,7 +76,7 @@ struct PlaytimeView: View {
             
             ScrollView {
                 Group {
-                    LineView(data: graphData, title: "% of time playing", legend: "% of time played", style: .init(backgroundColor: .pink, accentColor: .white, gradientColor: GradientColor.init(start: .white, end: .white), textColor: .white, legendTextColor: .white, dropShadowColor: .black), valueSpecifier: "value test", legendSpecifier: "%")
+                    LineView(data: graphData, title: "% of time playing", legend: "% of time played", style: .init(backgroundColor: .pink, accentColor: .white, gradientColor: GradientColor.init(start: .white, end: .white), textColor: .white, legendTextColor: .white, dropShadowColor: .black), valueSpecifier: "", legendSpecifier: "%")
                         .frame(width: nil, height: 360, alignment: .center)
                         .padding()
                         .background(Color.pink)

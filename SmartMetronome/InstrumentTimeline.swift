@@ -46,7 +46,7 @@ class InstrumentTimeline {
     private let playStopThreshold: Double = 5.0
     
     // The threshold for someone "playing" and instrument
-    private let playingThreshold: Double = 0.5
+    private let playingThreshold: Double = 0.25
     
     // The identifier found above, nil if it is not playing, non-nil
     // if it is currently playing and the date is when it started

@@ -30,14 +30,14 @@ class SnapTimeline {
     func add(confidence: Double) {
         timeline.append((Date(), confidence))
 
-        if confidence > 0.85 {
+        if confidence > 0.5 {
             wasJustReset = false
         }
         processTimeline()
     }
     
     func processTimeline() {
-        let threshold = 0.85
+        let threshold = 0.5
         let timelineWithThreshold = timeline.map { ($0, $1 > threshold) }
         
         var datesCrossingThreshold = [Date]()
@@ -70,7 +70,7 @@ class SnapTimeline {
         
         // Differences must be within a certain percentage of each other, otherwise
         // it's likely old snaps still in the timeline
-        let averageThreshold = 0.10
+        let averageThreshold = 0.25
         let lowThreshold = average * (1 - averageThreshold)
         let highThreshold = average * (1 + averageThreshold)
         var isValid = true
