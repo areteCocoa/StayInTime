@@ -29,24 +29,44 @@ struct PlaytimeView: View {
         VStack {
             HStack {
                 VStack {
-                    Text("Play time")
                     Text("\(formatted(playTime))")
+                        .font(.title)
+                    Text("Play time")
+                    
                 }
+                .frame(maxWidth: .infinity)
                 VStack {
-                    Text("Idle time")
                     Text("\(formatted(idleTime))")
+                        .font(.title)
+                    Text("Idle time")
+                    
                 }
+                .frame(maxWidth: .infinity)
                 VStack {
-                    Text("Total time")
                     Text("\(formatted(totalTime))")
+                        .font(.title)
+                    Text("Total time")
                 }
+                .frame(maxWidth: .infinity)
             }
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(.pink)
             List {
                 ForEach(0..<playChunks.count) { index in
-                    Text("(\(formatted(start: playChunks[index].start, end: playChunks[index].stop))) Played for \(formatted(abs(playChunks[index].stop.timeIntervalSince(playChunks[index].start))))")
+                    HStack(spacing: 0) {
+                        Text(" \(formatted(abs(playChunks[index].stop.timeIntervalSince(playChunks[index].start))))")
+                            .font(.headline)
+                        Text(" of playtime")
+                        Spacer()
+                        Text("\(formatted(start: playChunks[index].start, end: playChunks[index].stop))")
+                            .foregroundColor(.gray)
+                    }
                 }
             }
         }
+        .navigationBarTitle("Play time")
     }
     
     func formatted(start: Date, end: Date) -> String {
@@ -65,7 +85,22 @@ struct PlaytimeView: View {
 }
 
 struct InstrumentTimelineView_Previews: PreviewProvider {
+    static var timeline: InstrumentTimeline {
+        let interval: TimeInterval = 10
+        let count = 10
+        let timeline = InstrumentTimeline()
+        (0..<count).forEach { offset in
+            let start = Date().addingTimeInterval(-interval*Double(offset))
+            let end =
+            Date().addingTimeInterval(-interval*Double((offset-1)))
+            timeline.playHistory.append(.init(start: start, stop: end, instrument: timeline.currentInstrument))
+        }
+        return timeline
+    }
+    
     static var previews: some View {
-        InstrumentTimelineView(instrumentTimeline: .init())
+        NavigationView {
+            InstrumentTimelineView(instrumentTimeline: timeline)
+        }
     }
 }

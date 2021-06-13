@@ -148,6 +148,7 @@ struct MetronomeView: View {
                 Spacer()
                 
                 Text("Current beat is")
+                    .foregroundColor(.gray)
                 Text("\(currentBeat)")
                     .font(.largeTitle)
                 
@@ -185,15 +186,18 @@ struct MetronomeView: View {
                             self.onStop()
                         }
                     }) {
-                        Text(metronomeRunning ? "Stop" : "Start")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 32)
-                            .padding()
-                            .background(Color.pink)
-                            .cornerRadius(16)
-                            .padding()
+                        HStack {
+                            Image(systemName: metronomeRunning ? "pause.fill" : "play.fill")
+                            Text(metronomeRunning ? "Stop" : "Start")
+                                .bold()
+                        }
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 32)
+                        .padding()
+                        .background(Color.pink)
+                        .cornerRadius(16)
+                        .padding()
                     }
                     Spacer()
                 }
