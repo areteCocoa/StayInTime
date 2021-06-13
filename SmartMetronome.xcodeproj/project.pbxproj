@@ -14,6 +14,7 @@
 		208918DD26756316005086BF /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208918DC26756316005086BF /* AudioManager.swift */; };
 		208918DF267569D4005086BF /* ClassificationResultsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208918DE267569D4005086BF /* ClassificationResultsSubject.swift */; };
 		208918E226757663005086BF /* tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 208918E126757663005086BF /* tick.wav */; };
+		208918E4267581B5005086BF /* SnapTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208918E3267581B5005086BF /* SnapTimeline.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		208918DE267569D4005086BF /* ClassificationResultsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassificationResultsSubject.swift; sourceTree = "<group>"; };
 		208918E026756F87005086BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		208918E126757663005086BF /* tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tick.wav; sourceTree = "<group>"; };
+		208918E3267581B5005086BF /* SnapTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapTimeline.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				208918E026756F87005086BF /* Info.plist */,
 				208918E126757663005086BF /* tick.wav */,
 				20782C7F2675560900A0608C /* SmartMetronomeApp.swift */,
+				208918E3267581B5005086BF /* SnapTimeline.swift */,
 				20782C812675560900A0608C /* ContentView.swift */,
 				208918DC26756316005086BF /* AudioManager.swift */,
 				208918DE267569D4005086BF /* ClassificationResultsSubject.swift */,
@@ -152,6 +155,7 @@
 				208918DD26756316005086BF /* AudioManager.swift in Sources */,
 				20782C822675560900A0608C /* ContentView.swift in Sources */,
 				20782C802675560900A0608C /* SmartMetronomeApp.swift in Sources */,
+				208918E4267581B5005086BF /* SnapTimeline.swift in Sources */,
 				208918DF267569D4005086BF /* ClassificationResultsSubject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

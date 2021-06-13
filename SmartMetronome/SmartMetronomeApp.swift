@@ -12,6 +12,7 @@ import SoundAnalysis
 
 
 class AppState: ObservableObject {
+    
     private var detectionCancellable: AnyCancellable? = nil
     
     private var tickEffect: AVAudioPlayer? = {
@@ -22,12 +23,14 @@ class AppState: ObservableObject {
     
     private var lastActedTime: Date?
     
+    private var snapTimeline: SnapTimeline = SnapTimeline()
+    
     @Published var beatsPerBar: Int = 4
     @Published var subdivision: Int = 4
     
     @Published var currentBeat: Int = 1
     @Published var beatsPerMinute: Double = 60
-    var beatsPerSecond: Double { beatsPerMinute / 60 }
+    var beatsPerSecond: Double { 60 / beatsPerMinute }
     private var timer: Timer? {
         didSet {
             metronomeRunning = (timer != nil)
@@ -36,6 +39,14 @@ class AppState: ObservableObject {
     
     @Published var soundDetectionRunning: Bool = false
     @Published var metronomeRunning: Bool = false
+    
+    init() {
+        snapTimeline.didSetBpm = {
+            guard let bpm = self.snapTimeline.beatsPerMinute else { return }
+            self.beatsPerMinute = Double(bpm)
+            self.start()
+        }
+    }
     
     func restartDetection() {
         AudioManager.singleton.stopSoundClassification()
@@ -51,6 +62,10 @@ class AppState: ObservableObject {
                 
                 guard let snap = value.classifications.first(where: { $0.identifier == "finger_snapping" }) else { return }
                 
+                if !self.metronomeRunning {
+                    self.snapTimeline.add(confidence: snap.confidence)
+                }
+                
                 let threshold: Double = 2
                 if let lastActedTime = self.lastActedTime {
                     let earliestTimeToAct = lastActedTime.addingTimeInterval(threshold)
@@ -62,24 +77,26 @@ class AppState: ObservableObject {
                     }
                 }
                 
-                if speech.confidence > 0.5 {
-                    if self.metronomeRunning {
-                        self.stop()
-                    } else {
-                        self.start()
-                    }
-                    self.lastActedTime = Date()
-                }
+//                if speech.confidence > 0.5 {
+//                    if self.metronomeRunning {
+//                        self.stop()
+//                    } else {
+//                        self.start()
+//                    }
+//                    self.lastActedTime = Date()
+//                }
             })
         
         AudioManager.singleton.startSoundClassification(subject: classificationSubject,
-                                                        inferenceWindowSize: Double(1.5),
+                                                        inferenceWindowSize: Double(0.5),
                                                         overlapFactor: Double(0.9))
     }
     
     func start() {
         currentBeat = 0
         incrementBeat()
+        
+        print(beatsPerSecond)
         
         let timer = Timer.scheduledTimer(withTimeInterval: self.beatsPerSecond, repeats: true) { _ in
             self.incrementBeat()
