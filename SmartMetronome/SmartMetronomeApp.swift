@@ -24,6 +24,7 @@ class AppState: ObservableObject {
     private var lastActedTime: Date?
     
     private var snapTimeline: SnapTimeline = SnapTimeline()
+    private var instrumentTimeline: InstrumentTimeline = InstrumentTimeline()
     
     @Published var beatsPerBar: Int = 4
     @Published var beatValue: Int = 4
@@ -58,7 +59,8 @@ class AppState: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in self.soundDetectionRunning = false },
                   receiveValue: { value in
-                guard let speech = value.classifications.first(where: { $0.identifier == "speech" }) else { return }
+                let instruments = value.classifications.filter { InstrumentTimeline.instrumentIdentifiers.contains($0.identifier) }
+                self.instrumentTimeline.update(instruments.map { ($0.identifier, $0.confidence) })
                 
                 guard let snap = value.classifications.first(where: { $0.identifier == "finger_snapping" }) else { return }
                 
@@ -76,15 +78,6 @@ class AppState: ObservableObject {
                         return
                     }
                 }
-                
-//                if speech.confidence > 0.5 {
-//                    if self.metronomeRunning {
-//                        self.stop()
-//                    } else {
-//                        self.start()
-//                    }
-//                    self.lastActedTime = Date()
-//                }
             })
         
         AudioManager.singleton.startSoundClassification(subject: classificationSubject,
@@ -95,8 +88,6 @@ class AppState: ObservableObject {
     func start() {
         currentBeat = 0
         incrementBeat()
-        
-        print(beatsPerSecond)
         
         let timer = Timer.scheduledTimer(withTimeInterval: self.beatsPerSecond, repeats: true) { _ in
             self.incrementBeat()
