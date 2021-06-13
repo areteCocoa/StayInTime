@@ -14,16 +14,16 @@ class InstrumentTimeline {
         let instrument: String
     }
     
-    static var instrumentIdentifiers: [String] {
+    private static var instrumentIdentifiers: [String] {
         [
-            "plucked_string_instrument",
-            "synthesizer",
             "piano",
-            "bowed_string_instrument",
-            "electric_piano",
-            "violin_fiddle"
+            "bowed_string_instrument"
         ]
     }
+    
+    var currentInstrument: String = "bowed_string_instrument"
+    
+    private let playStopThreshold: Double = 5.0
     
     // The threshold for someone "playing" and instrument
     private let playingThreshold: Double = 0.5
@@ -31,6 +31,7 @@ class InstrumentTimeline {
     // The identifier found above, nil if it is not playing, non-nil
     // if it is currently playing and the date is when it started
     private var instrumentPlayStart: [String: Date?] = [:]
+    private var instrumentPlayStop: [String: Date?] = [:]
     
     private var playHistory: [PlayDuration] = []
     
@@ -38,16 +39,28 @@ class InstrumentTimeline {
         instruments.forEach { identifier, confidence in
             let now = Date()
             let playStartDate = instrumentPlayStart[identifier]
+            let playStopDate = instrumentPlayStop[identifier]
             let isCurrentlyPlaying = confidence >= playingThreshold
             
-            if !isCurrentlyPlaying, let maybeDate = playStartDate, let date = maybeDate {
-                let duration = PlayDuration(start: date, stop: now, instrument: identifier)
-                playHistory.append(duration)
-                instrumentPlayStart[identifier] = nil
-                print("Stopped playing \(identifier)")
+            if !isCurrentlyPlaying, let startDate = playStartDate, let startDate = startDate {
+                // Stopped playing
+                if let stopDate = playStopDate,
+                    let stopDate = stopDate,
+                    abs(stopDate.timeIntervalSince(now)) > self.playStopThreshold  {
+                    let duration = PlayDuration(start: startDate, stop: now, instrument: identifier)
+                    playHistory.append(duration)
+                    instrumentPlayStart[identifier] = nil
+                    instrumentPlayStop[identifier] = nil
+                    print("(\(abs(stopDate.timeIntervalSince(now))) seconds) Stopped playing \(identifier)")
+                } else if playStopDate == nil {
+                    instrumentPlayStop[identifier] = now
+                }
             } else if isCurrentlyPlaying, playStartDate == nil {
                 instrumentPlayStart[identifier] = now
                 print("Started playing \(identifier)")
+            } else if isCurrentlyPlaying, playStopDate != nil {
+                instrumentPlayStop[identifier] = nil
+                print("(\(identifier)) Thought they were done, they were not!")
             }
         }
     }

@@ -59,7 +59,7 @@ class AppState: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in self.soundDetectionRunning = false },
                   receiveValue: { value in
-                let instruments = value.classifications.filter { InstrumentTimeline.instrumentIdentifiers.contains($0.identifier) }
+                let instruments = value.classifications.filter { self.instrumentTimeline.currentInstrument == $0.identifier }
                 self.instrumentTimeline.update(instruments.map { ($0.identifier, $0.confidence) })
                 
                 guard let snap = value.classifications.first(where: { $0.identifier == "finger_snapping" }) else { return }
